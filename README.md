@@ -6,15 +6,25 @@ Node.js file reading and formatting library
 
 `npm install readr`
 
+## Basic Example
+
+```
+/path/to/files/
+  * some_directory/
+    * file.txt
+    * csv_file.csv
+```
+
+Given the above directory tree, find all .txt files.
+
 ```javascript
 var readr = require('readr');
-
-files = readr('/path/to/files', {extension: 'txt'})
+readr('/path/to/files', {extension: 'txt'});
 /*
   [
     {
       path: '/path/to/files/some_directory/file.txt',
-      contents: 'This is a file.',
+      contents: "Contents of file.txt,
       friendlyPath: 'some_directory/file'
     }
   ]
@@ -27,7 +37,7 @@ readr is a tool to read files by type (extension) and return a formatted object 
 
 * `path` - the absolute path of the file
 * `contents` - the contents of the file
-* `friendlyPath` a formatted string representing the file location
+* `friendlyPath` a formatted string better suited for referencing the file.
 
 
 ## API
