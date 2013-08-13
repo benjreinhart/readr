@@ -10,7 +10,7 @@ Node.js file reading library.
 
 ## Basic Example
 
-Given the above directory tree:
+Given the following directory tree:
 
 ```
 /path/to/files/
