@@ -52,7 +52,9 @@ readr is a tool to read files by type (extension) and return a formatted object 
 
 ## API
 
-##### readr(baseDirectoryOrFilePath, options)
+##### readr(path, options)
+
+`path` can be either a directory or a file. If it is a directory, then it will glob for files with an extension equal to the `extension` option and return an array of files found. If it is a file, it will return that file.
 
 `options` can be the following:
 
@@ -60,6 +62,8 @@ readr is a tool to read files by type (extension) and return a formatted object 
 * `friendlyPath` (string|function)
   * string - any/all files will have a `friendlyPath` attribute equal to the `friendlyPath` option
   * function - will invoke the function for each file found, passing it `(path, absolutePath)` where `path` is the absolute path minus the extension and optionally minus the base directory. The result of this call will be the `friendlyPath` of the file object.
+
+
 
 ## License
 

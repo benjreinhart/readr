@@ -12,10 +12,9 @@ module.exports = (baseDir, options = {}) ->
     file.friendlyPath = getFriendlyPath baseDir, options
     return file
 
-  if !(isString extension)
-    throw new Error 'Must provide an `extension` option if path is a directory'
+  unless isString extension
+    throw new Error 'Must provide an `extension` option if path argument is a directory'
 
-  files = getFiles baseDir, extension
-  files.map (file) ->
+  getFiles(baseDir, extension).map (file) ->
     file.friendlyPath = getFriendlyPath file.path, options
     file
