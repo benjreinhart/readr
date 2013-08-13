@@ -41,7 +41,7 @@ readr is a tool to read files by type (extension) and return a formatted object 
 
 * `path` - the absolute path of the file
 * `contents` - the contents of the file
-* `friendlyPath` a formatted string better suited for referencing the file.
+* `friendlyPath` a formatted string better suited for referencing the file
 
 
 ## API
