@@ -6,7 +6,11 @@ Node.js file reading and formatting library
 
 `npm install readr`
 
+`var readr = require('readr');`
+
 ## Basic Example
+
+Given the above directory tree:
 
 ```
 /path/to/files/
@@ -15,7 +19,7 @@ Node.js file reading and formatting library
     * csv_file.csv
 ```
 
-Given the above directory tree, find all .txt files.
+find all .txt files
 
 ```javascript
 var readr = require('readr');
