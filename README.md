@@ -16,6 +16,7 @@ Given the following directory tree:
 /path/to/files/
   * some_directory/
     * file.txt
+    * another_file.txt
     * csv_file.csv
 ```
 
@@ -28,8 +29,13 @@ readr('/path/to/files', {extension: 'txt'});
   [
     {
       path: '/path/to/files/some_directory/file.txt',
-      contents: "Contents of file.txt,
+      contents: 'Contents of file.txt',
       friendlyPath: 'some_directory/file'
+    },
+    {
+      path: '/path/to/files/some_directory/another_file.txt',
+      contents: 'Contents of another_file.txt',
+      friendlyPath: 'some_directory/another_file'
     }
   ]
 */
