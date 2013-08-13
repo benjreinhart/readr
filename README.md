@@ -1,6 +1,6 @@
 # readr
 
-Node.js file reading and formatting library
+Node.js file reading library.
 
 ## Installing
 
