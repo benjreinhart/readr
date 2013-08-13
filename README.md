@@ -38,7 +38,7 @@ readr is a tool to read files by type (extension) and return a formatted object 
 
 * `extension` (string) - the type of files to read
 * `friendlyPath` (string|function)
-  * string - any/all files will have a `friendlyPath` attribute
+  * string - any/all files will have a `friendlyPath` attribute equal to the `friendlyPath` option passed in
   * function - will invoke the function for each file found, passing it `(path, absolutePath)` where `path` is the absolute path minus the extension and optionally minus the base directory. The result of this call will be the `friendlyPath` of the file object.
 
 ## License
