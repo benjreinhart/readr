@@ -8,7 +8,7 @@ module.exports = (path, options = {}) ->
 
   fp = removeExtension path, extension
 
-  if isString(baseDir) and baseDir isnt path
+  if isString baseDir
     fp = removeBasePath baseDir, fp
 
   if 'function' is typeof friendlyPath
