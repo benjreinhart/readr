@@ -1,7 +1,7 @@
 {
     "name": "readr"
   , "version": "0.0.1-dev"
-  , "description": "File reading and formatting library"
+  , "description": "Node.js file reading and formatting library"
   , "author": "benjreinhart"
   , "engines":
     {
