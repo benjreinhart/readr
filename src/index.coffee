@@ -12,7 +12,7 @@ module.exports = (path, options = {}) ->
   unless isString extension
     throw new Error 'Must provide an `extension` option if path argument is a directory'
 
-  options.baseDir = path
+  options.basePath = path
 
   getFiles(path, extension).map (file) ->
     addFriendlyPath file, options

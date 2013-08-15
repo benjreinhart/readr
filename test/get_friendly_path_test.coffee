@@ -3,15 +3,15 @@ sinon = require 'sinon'
 getFriendlyPath = require '../lib/get_friendly_path'
 
 describe '#getFriendlyPath', ->
-  baseDir = '/Users/ben/projects/todos/views'
-  templatePath = baseDir + '/users/show.haml'
+  basePath = '/Users/ben/projects/todos/views'
+  templatePath = basePath + '/users/show.haml'
 
-  it 'strips away the baseDir and extension', ->
-    fp = getFriendlyPath templatePath, {baseDir, extension: 'haml'}
+  it 'strips away the basePath and extension', ->
+    fp = getFriendlyPath templatePath, {basePath, extension: 'haml'}
     expect(fp).to.equal 'users/show'
 
   it 'is the `friendlyPath` option if the `friendlyPath` option is a string', ->
-    fp = getFriendlyPath templatePath, {baseDir, extension: 'haml', friendlyPath: 'poop/sauce'}
+    fp = getFriendlyPath templatePath, {basePath, extension: 'haml', friendlyPath: 'poop/sauce'}
     expect(fp).to.equal 'poop/sauce'
 
   it 'is the result of invoking `friendlyPath` option if the `friendlyPath` option is a function', ->
@@ -21,5 +21,5 @@ describe '#getFriendlyPath', ->
 
       'friendly/path'
 
-    fp = getFriendlyPath templatePath, {baseDir, friendlyPath, extension: 'haml'}
+    fp = getFriendlyPath templatePath, {basePath, friendlyPath, extension: 'haml'}
     expect(fp).to.equal 'friendly/path'

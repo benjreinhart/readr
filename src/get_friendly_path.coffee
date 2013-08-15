@@ -2,22 +2,26 @@ Path = require 'path'
 {isString} = require './utils'
 
 module.exports = (path, options = {}) ->
-  {baseDir, extension, friendlyPath} = options
+  {basePath, extension, friendlyPath} = options
 
-  return friendlyPath if isString friendlyPath
+  if isString friendlyPath
+    return friendlyPath
 
-  fp = removeExtension path, extension
+  fp = path
 
-  if isString baseDir
-    fp = removeBasePath baseDir, fp
+  if isString extension
+    fp = removeExtension path, extension
+
+  if isString basePath
+    fp = removeBasePath basePath, fp
 
   if 'function' is typeof friendlyPath
     fp = friendlyPath fp, path
 
   fp
 
-removeBasePath = (baseDir, path) ->
-  path.replace (new RegExp "^#{baseDir}#{Path.sep}"), ''
+removeBasePath = (basePath, path) ->
+  path.replace (new RegExp "^#{basePath}#{Path.sep}"), ''
 
 removeExtension = (path, extension) ->
   path.replace (new RegExp "\\.#{extension}$"), ''

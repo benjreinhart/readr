@@ -62,6 +62,12 @@ describe '#readr', ->
         contents: 'Name,Age\njohn,24'
         friendlyPath: 'peoplecsv'
 
+    it 'is the absolute path if no friendly option is provided and path argument is a file', ->
+      expect(readr csvLocation + '/people.csv').to.eql
+        path: csvLocation + '/people.csv'
+        contents: 'Name,Age\njohn,24'
+        friendlyPath: csvLocation + '/people.csv'
+
     it 'invokes the `friendlyPath` option if `friendlyPath` option is a function', ->
       friendlyPath = (path) -> 'dashboard/' + path
 
