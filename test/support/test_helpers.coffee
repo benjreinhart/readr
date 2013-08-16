@@ -1,4 +1,4 @@
-# Takes two arrays of template objects and does a deep comparison
+# Takes two arrays of readr file objects and does a deep comparison
 exports.deepInclude = (results, expectedResults) ->
   expectedResults.every (eR) ->
     results.some (r) ->
