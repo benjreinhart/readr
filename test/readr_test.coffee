@@ -1,42 +1,31 @@
 readr = require '../'
 {expect} = require 'chai'
-{deepInclude} = require './support/test_helpers'
 
 testDir = __dirname
-
 csvLocation = testDir + '/csv'
 mustacheLocation = testDir + '/mustache'
 
-# Takes two arrays of template objects and does a deep comparison
-deepInclude = (results, expectedResults) ->
-  expectedResults.every (eR) ->
-    results.some (r) ->
-      r.path is eR.path and r.contents is eR.contents and r.friendlyPath is eR.friendlyPath
-
-
 describe 'readr', ->
   it 'globs for files and adds the default friendlyPath', (done) ->
-    expectedResults = [
-      {
-        path: mustacheLocation + '/index.mustache'
-        contents: '<h1>Hello, {{name}}</h1>'
-        friendlyPath: 'mustache/index'
-      }
-      {
-        path: mustacheLocation + '/show.mustache'
-        contents: '<h1>{{user.name}}</h1>'
-        friendlyPath: 'mustache/show'
-      }
-      {
-        path: mustacheLocation + '/nested_dir/nested_dir_2/nested_dir_3/nested_file.mustache'
-        contents: '<header>NESTED DIR!!!!</header>'
-        friendlyPath: 'mustache/nested_dir/nested_dir_2/nested_dir_3/nested_file'
-      }
-    ]
-
     readr testDir, {extension: 'mustache'}, (err, files) ->
-      expect(files.length).to.equal 3
-      expect(deepInclude files, expectedResults).to.be.true
+      files = files.sort (file) -> file.path
+      expect(files).to.eql [
+        {
+          path: mustacheLocation + '/index.mustache'
+          contents: '<h1>Hello, {{name}}</h1>'
+          friendlyPath: 'mustache/index'
+        }
+        {
+          path: mustacheLocation + '/nested_dir/nested_dir_2/nested_dir_3/nested_file.mustache'
+          contents: '<header>NESTED DIR!!!!</header>'
+          friendlyPath: 'mustache/nested_dir/nested_dir_2/nested_dir_3/nested_file'
+        }
+        {
+          path: mustacheLocation + '/show.mustache'
+          contents: '<h1>{{user.name}}</h1>'
+          friendlyPath: 'mustache/show'
+        }
+      ]
 
       done()
 
@@ -92,24 +81,57 @@ describe 'readr', ->
     it 'invokes the `friendlyPath` option if `friendlyPath` option is a function', (done) ->
       friendlyPath = (path) -> 'dashboard/' + path
 
-      expectedResults = [
-        {
-          path: mustacheLocation + '/index.mustache'
-          contents: '<h1>Hello, {{name}}</h1>'
-          friendlyPath: 'dashboard/index'
-        }
-        {
-          path: mustacheLocation + '/show.mustache'
-          contents: '<h1>{{user.name}}</h1>'
-          friendlyPath: 'dashboard/show'
-        }
-        {
-          path: mustacheLocation + '/nested_dir/nested_dir_2/nested_dir_3/nested_file.mustache'
-          contents: '<header>NESTED DIR!!!!</header>'
-          friendlyPath: 'dashboard/nested_dir/nested_dir_2/nested_dir_3/nested_file'
-        }
-      ]
-
       readr mustacheLocation, {friendlyPath, extension: 'mustache'}, (err, files) ->
-        expect(deepInclude files, expectedResults).to.be.true
+        files = files.sort (file) -> file.path
+        expect(files).to.eql [
+          {
+            path: mustacheLocation + '/index.mustache'
+            contents: '<h1>Hello, {{name}}</h1>'
+            friendlyPath: 'dashboard/index'
+          }
+          {
+            path: mustacheLocation + '/nested_dir/nested_dir_2/nested_dir_3/nested_file.mustache'
+            contents: '<header>NESTED DIR!!!!</header>'
+            friendlyPath: 'dashboard/nested_dir/nested_dir_2/nested_dir_3/nested_file'
+          }
+          {
+            path: mustacheLocation + '/show.mustache'
+            contents: '<h1>{{user.name}}</h1>'
+            friendlyPath: 'dashboard/show'
+          }
+        ]
+
+        done()
+
+    it 'does not add a `friendlyPath` to the resulting object if the `friendlyPath` option is false for an individual file', (done) ->
+      options = {friendlyPath: false, extension: 'csv'}
+
+      readr csvLocation + '/people.csv', options, (err, files) ->
+        expect(files.length).to.equal 1
+        expect(files[0]).to.eql
+          path: csvLocation + '/people.csv'
+          contents: 'Name,Age\njohn,24'
+
+        done()
+
+    it 'does not add a `friendlyPath` to the resulting object if the `friendlyPath` option is false for a glob of files', (done) ->
+      options = {friendlyPath: false, extension: 'mustache'}
+
+      readr mustacheLocation, options, (err, files) ->
+        files = files.sort (file) -> file.path
+        expect(files).to.eql [
+          {
+            path: mustacheLocation + '/index.mustache'
+            contents: '<h1>Hello, {{name}}</h1>'
+          }
+          {
+            path: mustacheLocation + '/nested_dir/nested_dir_2/nested_dir_3/nested_file.mustache'
+            contents: '<header>NESTED DIR!!!!</header>'
+          }
+          {
+            path: mustacheLocation + '/show.mustache'
+            contents: '<h1>{{user.name}}</h1>'
+          }
+        ]
+
         done()

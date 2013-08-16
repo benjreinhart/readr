@@ -65,9 +65,10 @@ Async.
 `options` can be the following:
 
 * `extension` (string) - the type of files to read
-* `friendlyPath` (string|function)
+* `friendlyPath` (string|function|bool)
   * string - any/all files will have a `friendlyPath` attribute equal to the `friendlyPath` option
   * function - will invoke the function for each file found, passing it `(path, absolutePath)` where `path` is the absolute path minus the extension and optionally minus the base directory. The result of this call will be the `friendlyPath` of the file object.
+  * bool - if `false`, the resulting file objects will have no `friendlyPath` attribute
 
 
 #### readr.sync(path[, options])
