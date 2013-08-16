@@ -10,9 +10,9 @@
 
   , "keywords":
     [
-        "templating"
-      , "views"
-      , "markup"
+        "file"
+      , "file system"
+      , "file reading"
       , "format"
       , "paths"
       , "node"
