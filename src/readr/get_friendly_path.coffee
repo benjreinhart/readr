@@ -1,4 +1,4 @@
-Path = require 'path'
+{sep} = require 'path'
 {isString} = require './utils'
 
 module.exports = (path, options = {}) ->
@@ -21,7 +21,8 @@ module.exports = (path, options = {}) ->
   fp
 
 removeBasePath = (basePath, path) ->
-  if basePath.slice(-1) isnt Path.sep then basePath = basePath + Path.sep
+  if basePath[-1..] isnt sep
+    basePath = basePath + sep
   path.replace (new RegExp "^#{basePath}"), ''
 
 removeExtension = (path, extension) ->
