@@ -49,6 +49,24 @@ readr('/path/to/files', {extension: 'txt'}, function(err, files) {
 */
 ```
 
+Get a single file
+
+```javascript
+readr('/path/to/files/some_director/csv_file.csv', {friendlyPath: 'csv_file'}, function(err, files) {
+  console.log(files)
+});
+/*
+  [
+    {
+      path: '/path/to/files/some_directory/csv_file.csv',
+      contents: '',
+      friendlyPath: 'csv_file'
+    }
+  ]
+*/
+
+```
+
 ## Installing
 
 `npm install readr`
