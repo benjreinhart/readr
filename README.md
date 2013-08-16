@@ -58,6 +58,8 @@ readr('/path/to/files', {extension: 'txt'}, function(err, files) {
 
 #### readr(path[, options], callback)
 
+Async.
+
 `path` can be either a directory or a file. If it is a directory, then it will glob for files with an extension equal to the `extension` option and return an array of files found. If it is a file, it will return an array (for consistency) with one result (the file).
 
 `options` can be the following:
