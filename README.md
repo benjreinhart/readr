@@ -6,97 +6,9 @@ Flexible Node.js file reading library.
 
 Readr is a library that abstracts reading files from disk. It supports recursively reading multiple files in a directory by extension or reading an individual file via a clean API. Readr's API provides both sync and async operations.
 
-[http://benjreinhart.github.io/readr](http://benjreinhart.github.io/readr)
+It is tested against node >= 0.8.0.
 
-## What can readr do for you?
-
-readr is a tool to read files by type (extension) and return a formatted object with the following properties:
-
-* `path` - the absolute path of the file
-* `contents` - the contents of the file
-* `friendlyPath` (optional) a formatted string better suited for referencing the file
-
-## Basic Example
-
-Given the following directory tree:
-
-```
-/path/to/files/
-  * some_directory/
-    * file.txt
-    * another_file.txt
-    * csv_file.csv
-```
-
-find all .txt files
-
-```javascript
-var readr = require('readr');
-readr('/path/to/files', {extension: 'txt'}, function(err, files) {
-  console.log(files)
-});
-/*
-  [
-    {
-      path: '/path/to/files/some_directory/file.txt',
-      contents: 'Contents of file.txt',
-      friendlyPath: 'some_directory/file'
-    },
-    {
-      path: '/path/to/files/some_directory/another_file.txt',
-      contents: 'Contents of another_file.txt',
-      friendlyPath: 'some_directory/another_file'
-    }
-  ]
-*/
-```
-
-Get a single file
-
-```javascript
-readr('/path/to/files/some_director/csv_file.csv', {friendlyPath: 'csv_file'}, function(err, files) {
-  console.log(files)
-});
-/*
-  [
-    {
-      path: '/path/to/files/some_directory/csv_file.csv',
-      contents: '',
-      friendlyPath: 'csv_file'
-    }
-  ]
-*/
-
-```
-
-## Installing
-
-`npm install readr`
-
-`var readr = require('readr');`
-
-
-## API
-
-#### readr(path[, options], callback)
-
-Async.
-
-`path` can be either a directory or a file. If it is a directory, then it will glob for files with an extension equal to the `extension` option and return an array of files found. If it is a file, it will return an array (for consistency) with one result (the file).
-
-`options` can be the following:
-
-* `extension` (string) - the type of files to read
-* `friendlyPath` (string|function|bool)
-  * string - any/all files will have a `friendlyPath` attribute equal to the `friendlyPath` option
-  * function - will invoke the function for each file found, passing it `(path, absolutePath)` where `path` is the absolute path minus the extension and optionally minus the base directory. The result of this call will be the `friendlyPath` of the file object.
-  * bool - if `false`, the resulting file objects will have no `friendlyPath` attribute
-
-
-#### readr.sync(path[, options])
-
-Synchronous version of `readr`.
-
+Check out the [homepage](http://benjreinhart.github.io/readr) for documentation.
 
 ## License
 
