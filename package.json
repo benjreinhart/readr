@@ -1,6 +1,6 @@
 {
     "name": "readr"
-  , "version": "0.0.22"
+  , "version": "0.0.23"
   , "description": "Flexible Node.js file reading library"
   , "author": "benjreinhart"
   , "engines":
