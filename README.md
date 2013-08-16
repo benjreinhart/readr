@@ -4,6 +4,8 @@ Flexible Node.js file reading library.
 
 Readr is a library that abstracts reading files from disk. It supports recursively reading multiple files in a directory by extension or reading an individual file via a clean API. Readr's API provides both sync and async operations.
 
+[http://benjreinhart.github.io/readr](http://benjreinhart.github.io/readr)
+
 ## What can readr do for you?
 
 readr is a tool to read files by type (extension) and return a formatted object with the following properties:
