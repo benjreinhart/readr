@@ -21,7 +21,8 @@ module.exports = (path, options = {}) ->
   fp
 
 removeBasePath = (basePath, path) ->
-  path.replace (new RegExp "^#{basePath}#{Path.sep}"), ''
+  if basePath.slice(-1) isnt Path.sep then basePath = basePath + Path.sep
+  path.replace (new RegExp "^#{basePath}"), ''
 
 removeExtension = (path, extension) ->
   path.replace (new RegExp "\\.#{extension}$"), ''

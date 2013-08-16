@@ -7,15 +7,19 @@ testDir = __dirname
 csvLocation = testDir + '/csv'
 mustacheLocation = testDir + '/mustache'
 
-# Takes two arrays of template objects and does a deep comparison
-deepInclude = (results, expectedResults) ->
-  expectedResults.every (eR) ->
-    results.some (r) ->
-      r.path is eR.path and r.contents is eR.contents and r.friendlyPath is eR.friendlyPath
+describe 'readr#sync', ->
+  it 'globs for files and adds the default friendlyPath', ->
+    expect(readr.sync testDir, {extension: 'csv'}).to.eql [
+      {
+        path: csvLocation + '/people.csv'
+        contents: 'Name,Age\njohn,24'
+        friendlyPath: 'csv/people'
+      }
+    ]
 
+    results = readr.sync testDir, {extension: 'mustache'}
+    expect(results.length).to.equal 3
 
-describe 'readr', ->
-  it 'globs for files and adds the default friendlyPath', (done) ->
     expectedResults = [
       {
         path: mustacheLocation + '/index.mustache'
@@ -34,63 +38,51 @@ describe 'readr', ->
       }
     ]
 
-    readr testDir, {extension: 'mustache'}, (err, files) ->
-      expect(files.length).to.equal 3
-      expect(deepInclude files, expectedResults).to.be.true
-
-      done()
+    expect(deepInclude results, expectedResults).to.be.true
 
 
-  it 'returns a single file with only the extension removed when no `friendlyPath` option is provided', (done) ->
-    expectedResult =
+  it 'returns a single file with only the extension removed when no `friendlyPath` option is provided', ->
+    files = readr.sync csvLocation + '/people.csv', {extension: 'csv'}
+
+    expect(files.length).to.equal 1
+    expect(files[0]).to.eql
       path: csvLocation + '/people.csv'
       contents: 'Name,Age\njohn,24'
       friendlyPath: csvLocation + '/people'
 
-    readr csvLocation + '/people.csv', {extension: 'csv'}, (err, files) ->
-      expect(files.length).to.equal 1
-      expect(files[0]).to.eql expectedResult
-      done()
+  it "doesn't choke on a path with a trailing slash", ->
+    files = readr.sync testDir + '/', {extension: 'csv'}
 
-  it "doesn't choke on a path with a trailing slash", (done) ->
-    expectedResult =
+    expect(files.length).to.equal 1
+    expect(files[0]).to.eql
       path: csvLocation + '/people.csv'
       contents: 'Name,Age\njohn,24'
       friendlyPath: 'csv/people'
 
-    readr testDir + '/', {extension: 'csv'}, (err, files) ->
-      expect(files.length).to.equal 1
-      expect(files[0]).to.eql expectedResult
-      done()
-
   describe '`friendlyPath` option', ->
-    it 'is the `friendlyPath` option if `friendlyPath` option is a string', (done) ->
+    it 'is the `friendlyPath` option if `friendlyPath` option is a string', ->
       options = {friendlyPath: 'peoplecsv', extension: 'csv'}
+      files = readr.sync csvLocation + '/people.csv', options
 
-      expectedResult =
+      expect(files.length).to.equal 1
+      expect(files[0]).to.eql
         path: csvLocation + '/people.csv'
         contents: 'Name,Age\njohn,24'
         friendlyPath: 'peoplecsv'
 
-      readr csvLocation + '/people.csv', options, (err, files) ->
-        expect(files.length).to.equal 1
-        expect(files[0]).to.eql expectedResult
-        done()
+    it 'is the absolute path if no friendly option is provided and path argument is a file', ->
+      files = readr.sync csvLocation + '/people.csv'
 
-
-    it 'is the absolute path if no friendly option is provided and path argument is a file', (done) ->
-      expectedResult =
+      expect(files.length).to.equal 1
+      expect(files[0]).to.eql
         path: csvLocation + '/people.csv'
         contents: 'Name,Age\njohn,24'
         friendlyPath: csvLocation + '/people.csv'
 
-      readr csvLocation + '/people.csv', (err, files) ->
-        expect(files.length).to.equal 1
-        expect(files[0]).to.eql expectedResult
-        done()
-
-    it 'invokes the `friendlyPath` option if `friendlyPath` option is a function', (done) ->
+    it 'invokes the `friendlyPath` option if `friendlyPath` option is a function', ->
       friendlyPath = (path) -> 'dashboard/' + path
+
+      results = readr.sync mustacheLocation, {friendlyPath, extension: 'mustache'}
 
       expectedResults = [
         {
@@ -110,6 +102,4 @@ describe 'readr', ->
         }
       ]
 
-      readr mustacheLocation, {friendlyPath, extension: 'mustache'}, (err, files) ->
-        expect(deepInclude files, expectedResults).to.be.true
-        done()
+      expect(deepInclude results, expectedResults).to.be.true

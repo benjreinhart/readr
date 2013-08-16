@@ -1,12 +1,16 @@
 # readr
 
-Node.js file reading library.
+Flexible Node.js file reading library.
 
-## Installing
+Readr is a library that abstracts reading files from disk. It supports recursively reading multiple files in a directory by extension or reading an individual file.
 
-`npm install readr`
+## What can readr do for you?
 
-`var readr = require('readr');`
+readr is a tool to read files by type (extension) and return a formatted object with the following properties:
+
+* `path` - the absolute path of the file
+* `contents` - the contents of the file
+* `friendlyPath` (optional) a formatted string better suited for referencing the file
 
 ## Basic Example
 
@@ -24,7 +28,9 @@ find all .txt files
 
 ```javascript
 var readr = require('readr');
-readr('/path/to/files', {extension: 'txt'});
+readr('/path/to/files', {extension: 'txt'}, function(err, files) {
+  console.log(files)
+});
 /*
   [
     {
@@ -41,20 +47,18 @@ readr('/path/to/files', {extension: 'txt'});
 */
 ```
 
-## What can readr do for you?
+## Installing
 
-readr is a tool to read files by type (extension) and return a formatted object with the following properties:
+`npm install readr`
 
-* `path` - the absolute path of the file
-* `contents` - the contents of the file
-* `friendlyPath` a formatted string better suited for referencing the file
+`var readr = require('readr');`
 
 
 ## API
 
-##### readr(path, options)
+#### readr(path[, options], callback)
 
-`path` can be either a directory or a file. If it is a directory, then it will glob for files with an extension equal to the `extension` option and return an array of files found. If it is a file, it will return that file.
+`path` can be either a directory or a file. If it is a directory, then it will glob for files with an extension equal to the `extension` option and return an array of files found. If it is a file, it will return an array (for consistency) with one result (the file).
 
 `options` can be the following:
 
@@ -63,6 +67,10 @@ readr is a tool to read files by type (extension) and return a formatted object 
   * string - any/all files will have a `friendlyPath` attribute equal to the `friendlyPath` option
   * function - will invoke the function for each file found, passing it `(path, absolutePath)` where `path` is the absolute path minus the extension and optionally minus the base directory. The result of this call will be the `friendlyPath` of the file object.
 
+
+#### readr.sync(path[, options])
+
+Synchronous version of `readr`.
 
 
 ## License

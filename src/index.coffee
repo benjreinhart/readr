@@ -1,22 +1,50 @@
 fs = require 'fs'
-{isString} = require './utils'
-getFriendlyPath = require './get_friendly_path'
-{getFiles, getFile} = require './get_files'
+{isString} = require './readr/utils'
+getFriendlyPath = require './readr/get_friendly_path'
 
-module.exports = (path, options = {}) ->
+{getFile, getFileSync, getFiles, getFilesSync} = require './readr/get_files'
+{isFile, isFileSync} = require './readr/fs_helpers'
+
+module.exports = readr = (path, options, cb) ->
+  if 'function' is typeof options then cb = options; options = {}
   {extension} = options
 
-  if fs.statSync(path).isFile()
-    return addFriendlyPath getFile(path), options
+  isFile path, (err, file) ->
+    return (cb err) if err?
 
-  unless isString extension
-    throw new Error 'Must provide an `extension` option if path argument is a directory'
+    if file
+      return getSingleFileAsync path, options, cb
+
+    if !(isString extension)
+      throw extensionError()
+
+    options.basePath = path
+    getFiles path, extension, (err, files) ->
+      return (cb err) if err?
+      cb null, (files.map (file) -> addFriendlyPath file, options)
+
+
+getSingleFileAsync = (path, options, cb) ->
+  getFile path, (err, file) ->
+    return cb err if err?
+    cb null, [addFriendlyPath file, options]
+
+readr.sync = (path, options = {}) ->
+  {extension} = options
+
+  if isFileSync path
+    return [addFriendlyPath getFileSync(path), options]
+
+  if !(isString extension)
+    throw extensionError()
 
   options.basePath = path
-
-  getFiles(path, extension).map (file) ->
+  getFilesSync(path, extension).map (file) ->
     addFriendlyPath file, options
 
 addFriendlyPath = (file, options) ->
   file.friendlyPath = getFriendlyPath file.path, options
   file
+
+extensionError = ->
+  new Error 'Must provide an `extension` option if path argument is a directory'
