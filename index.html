@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -15,17 +16,18 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Readr</h1>
-        <p>Flexible Node.js file reading library.</p>
-
-        <p class="view"><a href="https://github.com/benjreinhart/readr">View the Project on GitHub <small>benjreinhart/readr</small></a></p>
-
+        <h1 class="header">Readr</h1>
+        <p class="header">Flexible Node.js file reading library.</p>
 
         <ul>
-          <li><a href="https://github.com/benjreinhart/readr/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/benjreinhart/readr/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/benjreinhart/readr">View On <strong>GitHub</strong></a></li>
+          <li class="download"><a class="buttons" href="https://github.com/benjreinhart/readr/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/benjreinhart/readr/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/benjreinhart/readr">View On GitHub</a></li>
         </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/benjreinhart">benjreinhart</a></p>
+
+
       </header>
       <section>
         <h1>
@@ -47,7 +49,9 @@
 <code>contents</code> - the contents of the file</li>
 <li>
 <code>friendlyPath</code> (optional) a formatted string better suited for referencing the file</li>
-</ul><h2>
+</ul><p>It provides a nice abstraction around sync and async file reading, as well as reading individual files and globbing a directory. It is compatible with node 0.8 upward.</p>
+
+<h2>
 <a name="basic-example" class="anchor" href="#basic-example"><span class="octicon octicon-link"></span></a>Basic Example</h2>
 
 <p>Given the following directory tree:</p>
@@ -81,6 +85,23 @@
 <span class="cm">*/</span>
 </pre></div>
 
+<p>Get a single file</p>
+
+<div class="highlight"><pre><span class="nx">readr</span><span class="p">(</span><span class="s1">'/path/to/files/some_director/csv_file.csv'</span><span class="p">,</span> <span class="p">{</span><span class="nx">friendlyPath</span><span class="o">:</span> <span class="s1">'csv_file'</span><span class="p">},</span> <span class="kd">function</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">files</span><span class="p">)</span>
+<span class="p">});</span>
+<span class="cm">/*</span>
+<span class="cm">  [</span>
+<span class="cm">    {</span>
+<span class="cm">      path: '/path/to/files/some_directory/csv_file.csv',</span>
+<span class="cm">      contents: '',</span>
+<span class="cm">      friendlyPath: 'csv_file'</span>
+<span class="cm">    }</span>
+<span class="cm">  ]</span>
+<span class="cm">*/</span>
+
+</pre></div>
+
 <h2>
 <a name="installing" class="anchor" href="#installing"><span class="octicon octicon-link"></span></a>Installing</h2>
 
@@ -93,8 +114,6 @@
 
 <h4>
 <a name="readrpath-options-callback" class="anchor" href="#readrpath-options-callback"><span class="octicon octicon-link"></span></a>readr(path[, options], callback)</h4>
-
-<p>Async.</p>
 
 <p><code>path</code> can be either a directory or a file. If it is a directory, then it will glob for files with an extension equal to the <code>extension</code> option and return an array of files found. If it is a file, it will return an array (for consistency) with one result (the file).</p>
 
@@ -118,11 +137,10 @@
 <p>Synchronous version of <code>readr</code>.</p>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/benjreinhart">benjreinhart</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
   </body>
 </html>
