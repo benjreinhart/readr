@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Readr by benjreinhart</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Readr</h1>
+        <p>Flexible Node.js file reading library.</p>
+
+        <p class="view"><a href="https://github.com/benjreinhart/readr">View the Project on GitHub <small>benjreinhart/readr</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/benjreinhart/readr/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/benjreinhart/readr/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/benjreinhart/readr">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="readr" class="anchor" href="#readr"><span class="octicon octicon-link"></span></a>readr</h1>
+
+<p>Flexible Node.js file reading library.</p>
+
+<p>Readr is a library that abstracts reading files from disk. It supports recursively reading multiple files in a directory by extension or reading an individual file via a clean API. Readr's API provides both sync and async operations.</p>
+
+<h2>
+<a name="what-can-readr-do-for-you" class="anchor" href="#what-can-readr-do-for-you"><span class="octicon octicon-link"></span></a>What can readr do for you?</h2>
+
+<p>readr is a tool to read files by type (extension) and return a formatted object with the following properties:</p>
+
+<ul>
+<li>
+<code>path</code> - the absolute path of the file</li>
+<li>
+<code>contents</code> - the contents of the file</li>
+<li>
+<code>friendlyPath</code> (optional) a formatted string better suited for referencing the file</li>
+</ul><h2>
+<a name="basic-example" class="anchor" href="#basic-example"><span class="octicon octicon-link"></span></a>Basic Example</h2>
+
+<p>Given the following directory tree:</p>
+
+<pre><code>/path/to/files/
+  * some_directory/
+    * file.txt
+    * another_file.txt
+    * csv_file.csv
+</code></pre>
+
+<p>find all .txt files</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">readr</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readr'</span><span class="p">);</span>
+<span class="nx">readr</span><span class="p">(</span><span class="s1">'/path/to/files'</span><span class="p">,</span> <span class="p">{</span><span class="nx">extension</span><span class="o">:</span> <span class="s1">'txt'</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">files</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">files</span><span class="p">)</span>
+<span class="p">});</span>
+<span class="cm">/*</span>
+<span class="cm">  [</span>
+<span class="cm">    {</span>
+<span class="cm">      path: '/path/to/files/some_directory/file.txt',</span>
+<span class="cm">      contents: 'Contents of file.txt',</span>
+<span class="cm">      friendlyPath: 'some_directory/file'</span>
+<span class="cm">    },</span>
+<span class="cm">    {</span>
+<span class="cm">      path: '/path/to/files/some_directory/another_file.txt',</span>
+<span class="cm">      contents: 'Contents of another_file.txt',</span>
+<span class="cm">      friendlyPath: 'some_directory/another_file'</span>
+<span class="cm">    }</span>
+<span class="cm">  ]</span>
+<span class="cm">*/</span>
+</pre></div>
+
+<h2>
+<a name="installing" class="anchor" href="#installing"><span class="octicon octicon-link"></span></a>Installing</h2>
+
+<p><code>npm install readr</code></p>
+
+<p><code>var readr = require('readr');</code></p>
+
+<h2>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
+
+<h4>
+<a name="readrpath-options-callback" class="anchor" href="#readrpath-options-callback"><span class="octicon octicon-link"></span></a>readr(path[, options], callback)</h4>
+
+<p>Async.</p>
+
+<p><code>path</code> can be either a directory or a file. If it is a directory, then it will glob for files with an extension equal to the <code>extension</code> option and return an array of files found. If it is a file, it will return an array (for consistency) with one result (the file).</p>
+
+<p><code>options</code> can be the following:</p>
+
+<ul>
+<li>
+<code>extension</code> (string) - the type of files to read</li>
+<li>
+<code>friendlyPath</code> (string|function|bool)
+
+<ul>
+<li>string - any/all files will have a <code>friendlyPath</code> attribute equal to the <code>friendlyPath</code> option</li>
+<li>function - will invoke the function for each file found, passing it <code>(path, absolutePath)</code> where <code>path</code> is the absolute path minus the extension and optionally minus the base directory. The result of this call will be the <code>friendlyPath</code> of the file object.</li>
+<li>bool - if <code>false</code>, the resulting file objects will have no <code>friendlyPath</code> attribute</li>
+</ul>
+</li>
+</ul><h4>
+<a name="readrsyncpath-options" class="anchor" href="#readrsyncpath-options"><span class="octicon octicon-link"></span></a>readr.sync(path[, options])</h4>
+
+<p>Synchronous version of <code>readr</code>.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/benjreinhart">benjreinhart</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
