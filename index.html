@@ -89,7 +89,7 @@
 
 <p>Get a single file</p>
 
-<div class="highlight"><pre><span class="nx">readr</span><span class="p">(</span><span class="s1">'/path/to/files/some_director/csv_file.csv'</span><span class="p">,</span> <span class="p">{</span><span class="nx">friendlyPath</span><span class="o">:</span> <span class="s1">'csv_file'</span><span class="p">},</span> <span class="kd">function</span>
+<div class="highlight"><pre><span class="nx">readr</span><span class="p">(</span><span class="s1">'/path/to/files/some_director/csv_file.csv'</span><span class="p">,</span> <span class="p">{</span><span class="nx">friendlyPath</span><span class="o">:</span> <span class="s1">'csv_file'</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">files</span><span class="p">){</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">files</span><span class="p">)</span>
 <span class="p">});</span>
 <span class="cm">/*</span>
