@@ -15,17 +15,15 @@ module.exports = readr = (path, options, cb) ->
     if file
       return getFileAsync path, options, cb
 
-    if !(isString extension)
+    unless isString extension
       throw extensionError()
 
     options.basePath = path
     getFiles path, extension, (err, files) ->
       return (cb err) if err?
+      return (cb null, files) if options.friendlyPath is false
 
-      {friendlyPath} = options
-      cb null, files.map (file) ->
-        return file if friendlyPath is false
-        addFriendlyPath file, options
+      cb null, (files.map (file) -> addFriendlyPath file, options)
 
 
 getFileAsync = (path, options, cb) ->
@@ -48,11 +46,11 @@ readr.sync = (path, options = {}) ->
   if !(isString extension)
     throw extensionError()
 
+  files = getFilesSync path, extension
+  return files if options.friendlyPath is false
+
   options.basePath = path
-  {friendlyPath} = options
-  getFilesSync(path, extension).map (file) ->
-    return file if friendlyPath is false
-    addFriendlyPath file, options
+  files.map (file) -> addFriendlyPath file, options
 
 addFriendlyPath = (file, options) ->
   file.friendlyPath = getFriendlyPath file.path, options
