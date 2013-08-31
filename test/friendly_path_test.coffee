@@ -1,7 +1,7 @@
 {expect} = require 'chai'
-getFriendlyPath = require '../lib/readr/get_friendly_path'
+getFriendlyPath = require '../lib/readr/friendly_path'
 
-describe 'readr/get_friendly_path', ->
+describe 'readr/friendly_path', ->
   describe '#getFriendlyPath', ->
     basePath = '/Users/ben/projects/todos/views'
     templatePath = basePath + '/users/show.haml'

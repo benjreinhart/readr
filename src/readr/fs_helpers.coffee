@@ -1,12 +1,12 @@
 fs = require 'fs'
+glob = require 'glob'
 
-exports.isFile = (path, cb) ->
-  fs.stat path, (err, stats) ->
-    return (cb err) if err?
-    cb null, stats.isFile()
-
-exports.isFileSync = (path) ->
+exports.isFile = (path) ->
   fs.statSync(path).isFile()
+
+# Mostly for easy stubbing in tests
+exports.glob = glob
+exports.globSync = glob.sync.bind glob
 
 exports.readFile = (path, cb) ->
   options = if getNodeVersion() < 10 then 'utf8' else {encoding: 'utf8'}

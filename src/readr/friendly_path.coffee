@@ -22,7 +22,7 @@ module.exports = (path, options = {}) ->
 
 removeBasePath = (basePath, path) ->
   if basePath[-1..] isnt sep
-    basePath = basePath + sep
+    basePath += sep
   path.replace (new RegExp "^#{basePath}"), ''
 
 removeExtension = (path, extension) ->

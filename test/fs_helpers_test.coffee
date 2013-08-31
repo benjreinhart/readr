@@ -9,32 +9,14 @@ describe 'readr/fs_helpers', ->
   describe '#isFile', ->
     {isFile} = fsHelpers
 
-    it 'asynchronously returns true if the path is a file', (done) ->
-      isFile testDir + '/csv/people.csv', (err, file) ->
-        expect(file).to.be.true
-        done()
-
-    it 'asynchronously returns false if the path is a directory', (done) ->
-      isFile testDir + '/csv', (err, file) ->
-        expect(file).to.be.false
-        done()
-
-    it 'asynchronously returns an error if path does not exist', (done) ->
-      isFile testDir + '/not_existent_path', (err, file) ->
-        expect(err).to.be.an.instanceof Error
-        done()
-
-  describe '#isFileSync', ->
-    {isFileSync} = fsHelpers
-
     it 'synchronously returns true if the path is a file', ->
-      expect(isFileSync testDir + '/csv/people.csv').to.be.true
+      expect(isFile testDir + '/csv/people.csv').to.be.true
 
     it 'synchronously returns false if the path is a file', ->
-      expect(isFileSync testDir + '/csv').to.be.false
+      expect(isFile testDir + '/csv').to.be.false
 
     it 'throws an error if path does not exist', ->
-      nonExistentPath = -> isFileSync testDir + '/not_existent_path'
+      nonExistentPath = -> isFile testDir + '/not_existent_path'
       expect(nonExistentPath).to.throw /ENOENT/
 
   describe '#readFile', ->
