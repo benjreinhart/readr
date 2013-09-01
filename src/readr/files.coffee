@@ -5,7 +5,6 @@ async = require 'async'
 {getPaths, getPathsSync} = require './paths'
 
 getFilesSync = (path, options = {}) ->
-  options.filesOnly = true
   getPathsSync(path, options).map getFileSync
 
 getFileSync = (path) ->
@@ -17,7 +16,6 @@ getFileSync = (path) ->
 getFiles = (basePath, options, cb) ->
   if 'function' is typeof options then cb = options; options = {}
 
-  options.filesOnly = true
   getPaths basePath, options, (err, paths) ->
     return (cb err) if err?
     async.map paths, getFile, (err, files) ->
