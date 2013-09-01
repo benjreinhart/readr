@@ -106,7 +106,7 @@
 
 <p>Or just get the paths and their corresponding <code>friendlyPath</code> of a directory</p>
 
-<div class="highlight"><pre><span class="nx">readr</span><span class="p">.</span><span class="nx">getPaths</span><span class="p">(</span><span class="s1">'files'</span><span class="p">,</span> <span class="p">{</span><span class="nx">filesOnly</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">paths</span><span class="p">){</span>
+<div class="highlight"><pre><span class="nx">readr</span><span class="p">.</span><span class="nx">getPaths</span><span class="p">(</span><span class="s1">'files'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">paths</span><span class="p">){</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">paths</span><span class="p">)</span>
 <span class="p">});</span>
 <span class="cm">/*</span>
@@ -157,9 +157,7 @@
 <h4>
 <a name="readrgetpathspath-options-callback" class="anchor" href="#readrgetpathspath-options-callback"><span class="octicon octicon-link"></span></a>readr.getPaths(path[, options], callback)</h4>
 
-<p>Similar to <code>readr</code> except it only returns the file paths, not the contents of those files.</p>
-
-<p><code>options</code> are the same as options for readr except <code>getPaths</code> also has a <code>filesOnly</code> option which, if true, will only return file paths (not directory paths).</p>
+<p>Similar to <code>readr</code> except it only returns the file paths, not the contents of those files. <code>options</code> are the same as options for <code>readr</code>.</p>
 
 <h4>
 <a name="readrgetpathssyncpath-options" class="anchor" href="#readrgetpathssyncpath-options"><span class="octicon octicon-link"></span></a>readr.getPathsSync(path[, options])</h4>
