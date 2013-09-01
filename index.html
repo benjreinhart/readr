@@ -42,7 +42,7 @@
 <h2>
 <a name="what-can-readr-do-for-you" class="anchor" href="#what-can-readr-do-for-you"><span class="octicon octicon-link"></span></a>What can readr do for you?</h2>
 
-<p>readr is a tool to read files by type (extension) and return a formatted object with the following properties:</p>
+<p>readr is a tool to read files and return a formatted object with the following properties:</p>
 
 <ul>
 <li>
@@ -51,7 +51,7 @@
 <code>contents</code> - the contents of the file</li>
 <li>
 <code>friendlyPath</code> (optional) a formatted string better suited for referencing the file</li>
-</ul><p>It provides a nice abstraction around sync and async file reading, as well as reading individual files and globbing a directory. It is compatible with node 0.8 upward.</p>
+</ul><p>It provides a nice abstraction around sync and async file reading, as well as reading individual files and globbing directories. It is compatible with node 0.8 upward.</p>
 
 <h2>
 <a name="basic-example" class="anchor" href="#basic-example"><span class="octicon octicon-link"></span></a>Basic Example</h2>
@@ -68,7 +68,7 @@
 <p>find all .txt files</p>
 
 <div class="highlight"><pre><span class="kd">var</span> <span class="nx">readr</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'readr'</span><span class="p">);</span>
-<span class="nx">readr</span><span class="p">(</span><span class="s1">'/path/to/files'</span><span class="p">,</span> <span class="p">{</span><span class="nx">extension</span><span class="o">:</span> <span class="s1">'txt'</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">files</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">readr</span><span class="p">(</span><span class="s1">'files'</span><span class="p">,</span> <span class="p">{</span><span class="nx">extension</span><span class="o">:</span> <span class="s1">'txt'</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">files</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">files</span><span class="p">)</span>
 <span class="p">});</span>
 <span class="cm">/*</span>
@@ -89,7 +89,7 @@
 
 <p>Get a single file</p>
 
-<div class="highlight"><pre><span class="nx">readr</span><span class="p">(</span><span class="s1">'/path/to/files/some_director/csv_file.csv'</span><span class="p">,</span> <span class="p">{</span><span class="nx">friendlyPath</span><span class="o">:</span> <span class="s1">'csv_file'</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">files</span><span class="p">){</span>
+<div class="highlight"><pre><span class="nx">readr</span><span class="p">(</span><span class="s1">'files/some_director/csv_file.csv'</span><span class="p">,</span> <span class="p">{</span><span class="nx">friendlyPath</span><span class="o">:</span> <span class="s1">'csv_file'</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">files</span><span class="p">){</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">files</span><span class="p">)</span>
 <span class="p">});</span>
 <span class="cm">/*</span>
@@ -102,6 +102,20 @@
 <span class="cm">  ]</span>
 <span class="cm">*/</span>
 
+</pre></div>
+
+<p>Or just get the paths and their corresponding <code>friendlyPath</code> of a directory</p>
+
+<div class="highlight"><pre><span class="nx">readr</span><span class="p">.</span><span class="nx">getPaths</span><span class="p">(</span><span class="s1">'files'</span><span class="p">,</span> <span class="p">{</span><span class="nx">filesOnly</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">paths</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">paths</span><span class="p">)</span>
+<span class="p">});</span>
+<span class="cm">/*</span>
+<span class="cm">  [</span>
+<span class="cm">    {path: '/path/to/files/some_directory/another_file.txt', friendlyPath: 'some_directory/another_file.txt'},</span>
+<span class="cm">    {path: '/path/to/files/some_directory/csv_file.csv', friendlyPath: 'some_directory/csv_file.csv'},</span>
+<span class="cm">    {path: '/path/to/files/some_directory/file.txt', friendlyPath: 'some_directory/file.txt'}</span>
+<span class="cm">  ]</span>
+<span class="cm">*/</span>
 </pre></div>
 
 <h2>
@@ -117,7 +131,9 @@
 <h4>
 <a name="readrpath-options-callback" class="anchor" href="#readrpath-options-callback"><span class="octicon octicon-link"></span></a>readr(path[, options], callback)</h4>
 
-<p><code>path</code> can be either a directory or a file. If it is a directory, then it will glob for files with an extension equal to the <code>extension</code> option and return an array of files found. If it is a file, it will return an array (for consistency) with one result (the file).</p>
+<p>Will search <code>path</code> for all files (unless an <code>extension</code> option is provided, in which case it will only search for files with that extension) and return a formatted object with <code>path</code>, <code>contents</code> and (optionally) <code>friendlyPath</code> attributes.</p>
+
+<p><code>path</code> can be either a directory or a file. If it is a directory, then it will glob for files with an extension equal to the <code>extension</code> option and return an array of files found. If it is a file, it will return an array (for consistency) with one result (the file). If <code>path</code> is not an absolute path, then it will be relative to <code>process.cwd()</code>.</p>
 
 <p><code>options</code> can be the following:</p>
 
@@ -137,6 +153,18 @@
 <a name="readrsyncpath-options" class="anchor" href="#readrsyncpath-options"><span class="octicon octicon-link"></span></a>readr.sync(path[, options])</h4>
 
 <p>Synchronous version of <code>readr</code>.</p>
+
+<h4>
+<a name="readrgetpathspath-options-callback" class="anchor" href="#readrgetpathspath-options-callback"><span class="octicon octicon-link"></span></a>readr.getPaths(path[, options], callback)</h4>
+
+<p>Similar to <code>readr</code> except it only returns the file paths, not the contents of those files.</p>
+
+<p><code>options</code> are the same as options for readr except <code>getPaths</code> also has a <code>filesOnly</code> option which, if true, will only return file paths (not directory paths).</p>
+
+<h4>
+<a name="readrgetpathssyncpath-options" class="anchor" href="#readrgetpathssyncpath-options"><span class="octicon octicon-link"></span></a>readr.getPathsSync(path[, options])</h4>
+
+<p>Synchronous version of <code>readr.getPaths</code>.</p>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
