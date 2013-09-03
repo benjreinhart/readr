@@ -133,13 +133,13 @@
 
 <p>Will search <code>path</code> for all files (unless an <code>extension</code> option is provided, in which case it will only search for files with that extension) and return a formatted object with <code>path</code>, <code>contents</code> and (optionally) <code>friendlyPath</code> attributes.</p>
 
-<p><code>path</code> can be either a directory or a file. If it is a directory, then it will glob for files with an extension equal to the <code>extension</code> option and return an array of files found. If it is a file, it will return an array (for consistency) with one result (the file). If <code>path</code> is not an absolute path, then it will be relative to <code>process.cwd()</code>.</p>
+<p><code>path</code> can be either a directory or a file. If it is a directory, then it will glob for files with an extension equal to the <code>extension</code> option (if provided) and return an array of files found. If it is a file, it will return an array (for consistency) with one result (the file). If <code>path</code> is not an absolute path, then it will be relative to <code>process.cwd()</code>.</p>
 
 <p><code>options</code> can be the following:</p>
 
 <ul>
 <li>
-<code>extension</code> (string) - the type of files to read</li>
+<code>extension</code> (string) - if provided, <code>readr</code> will only search for files with an extension equal to the <code>extension</code> option</li>
 <li>
 <code>friendlyPath</code> (string|function|bool)
 
@@ -157,7 +157,7 @@
 <h4>
 <a name="readrgetpathspath-options-callback" class="anchor" href="#readrgetpathspath-options-callback"><span class="octicon octicon-link"></span></a>readr.getPaths(path[, options], callback)</h4>
 
-<p>Similar to <code>readr</code> except it only returns the file paths, not the contents of those files. <code>options</code> are the same as options for <code>readr</code>.</p>
+<p>Similar to <code>readr</code> except it will not open and read the contents of the files found, rather it will just return the absolute path and (optionally) <code>friendlyPath</code> attribute of the files found.</p>
 
 <h4>
 <a name="readrgetpathssyncpath-options" class="anchor" href="#readrgetpathssyncpath-options"><span class="octicon octicon-link"></span></a>readr.getPathsSync(path[, options])</h4>
