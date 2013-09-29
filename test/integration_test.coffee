@@ -23,6 +23,9 @@ describe 'readr integration tests', ->
     it 'returns file objects with absolute paths when `absolute` option is true', (done) ->
       run 'test/tests/readr_and_readr_sync/absolute_paths', done
 
+    it 'accepts an `encoding` option with value of "buffer" to return a raw buffer', (done) ->
+      run 'test/tests/readr_and_readr_sync/accepts_buffer_encoding_option', done
+
   describe '#getPaths & #getPathsSync', ->
     it 'basic path globbing', (done) ->
       run 'test/tests/get_paths_and_get_paths_sync/basic_path_globbing', done

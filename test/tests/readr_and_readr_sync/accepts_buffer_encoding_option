@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+
+/********************************************************
+  TEST:
+    Accepts an `encoding` option (default is utf8). If
+    the `encoding` option is 'buffer', the the `contents`
+    property of the resulting file objects will be a
+    raw buffer.
+ *******************************************************/
+
+var readr = require(process.cwd()),
+    expect  = require('chai').expect;
+
+var assertContentsIsABuffer = function(file){
+  expect(file.contents instanceof Buffer).to.be.true
+}
+
+/******
+  SYNC
+ ******/
+var files = readr.sync('test/files/example', {encoding: 'buffer'})
+files.forEach(assertContentsIsABuffer)
+
+/*******
+  ASYNC
+ *******/
+readr('test/files/example', {encoding: 'buffer'}, function (err, files) {
+  files.forEach(assertContentsIsABuffer)
+});

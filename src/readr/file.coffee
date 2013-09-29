@@ -1,39 +1,47 @@
 fs = require 'fs'
 async = require 'async'
-
 (File = exports).glob = require 'globber'
 
-File.getFiles = (args...) ->
-  cb = args.pop()
-  File.glob args..., (err, paths) ->
+File.getFiles = (path, options, cb) ->
+  if 'function' is typeof options then cb = options; options = {}
+
+  File.glob path, options, (err, paths) ->
     return (cb err) if err?
-    async.map paths, getFile, (err, files) ->
+
+    iterator = partiallyApply(getFile, options.encoding)
+    async.map paths, iterator, (err, files) ->
       return (cb err) if err?
       cb null, files
 
 File.getFilesSync = (path, options = {}) ->
-  File.glob.sync(path, options).map getFileSync
+  File.glob.sync(path, options).map(partiallyApply getFileSync, options.encoding)
 
-getFile = (path, cb) ->
+getFile = (encoding, path, cb) ->
   fs.exists path, (pathExists) ->
     return cb(pathDoesNotExistError path) unless pathExists
-    readFile path, (err, contents) ->
+    readFile path, encoding, (err, contents) ->
       return (cb err) if err?
       cb null, {path, contents}
 
-getFileSync = (path) ->
+getFileSync = (encoding, path) ->
   if fs.existsSync path
-    {path, contents: readFile(path)}
+    {path, contents: readFile(path, encoding)}
   else
     throw pathDoesNotExistError(path)
 
-pathDoesNotExistError = (path) ->
-  new Error "#{path} does not exist"
+readFile = (path, encoding = 'utf8', cb) ->
+  if encoding is 'buffer'
+    encoding = null
 
-readFile = (path, cb) ->
-  options = if getNodeVersion() < 10 then 'utf8' else {encoding: 'utf8'}
+  options = if getNodeVersion() < 10 then encoding else {encoding}
   method = if 'function' is typeof cb then 'readFile' else 'readFileSync'
   fs[method] path, options, cb
+
+partiallyApply = (fn, args...) ->
+  fn.bind null, args...
+
+pathDoesNotExistError = (path) ->
+  new Error "#{path} does not exist"
 
 getNodeVersion = ->
   +process.version[1..].split('.')[1]
