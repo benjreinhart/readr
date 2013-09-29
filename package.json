@@ -1,7 +1,7 @@
 {
     "name": "readr"
-  , "version": "0.3.0"
-  , "description": "Flexible Node.js file reading and globbing library"
+  , "version": "1.0.0"
+  , "description": "Flexible Node.js file reading library"
   , "author": "benjreinhart"
   , "homepage": "http://benjreinhart.github.io/readr"
   , "engines":
