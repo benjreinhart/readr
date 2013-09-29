@@ -1,4 +1,3 @@
-Path = require 'path'
 globber = require 'globber'
 getFriendlyPath = require './readr/friendly_path'
 {getFiles, getFilesSync} = (File = require './readr/file')
