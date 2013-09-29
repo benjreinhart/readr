@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+
+/********************************************************
+  TEST:
+    Find a single file.
+ *******************************************************/
+
+var readr = require(process.cwd()),
+    expect  = require('chai').expect;
+
+var expectedFile = [
+  {
+    path: 'test/files/info.txt',
+    friendlyPath: 'test/files/info'
+  }
+]
+
+/******
+  SYNC
+ ******/
+var actualSyncFile = readr.getPathsSync('test/files/info.txt');
+expect(actualSyncFile).to.eql(expectedFile);
+
+
+/*******
+  ASYNC
+ *******/
+readr.getPaths('test/files/info.txt', function (err, actualAsyncFile) {
+  expect(actualAsyncFile).to.eql(expectedFile);
+});

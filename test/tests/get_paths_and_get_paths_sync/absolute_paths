@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+
+/********************************************************
+  TEST:
+    If `absolute` option is true, then the `path`
+    attribute of the resulting path objects will be an
+    absolute path.
+ *******************************************************/
+
+var readr = require(process.cwd()),
+    expect  = require('chai').expect;
+
+
+var fs = require('fs')
+
+var isFile = function(path) {
+  return fs.existsSync(path) && fs.statSync(path).isFile()
+}
+
+/******
+  SYNC
+ ******/
+readr.getPathsSync('test/files/example', {absolute: true}).forEach(function(file){
+  expect(/^\//.test(file.path)).to.be.true
+  expect(isFile(file.path)).to.be.true
+});
+
+/*******
+  ASYNC
+ *******/
+readr.getPaths('test/files/example', {absolute: true}, function (err, files) {
+  files.forEach(function(file){
+    expect(/^\//.test(file.path)).to.be.true
+    expect(isFile(file.path)).to.be.true
+  });
+});

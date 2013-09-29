@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+
+/********************************************************
+  TEST:
+    Accepts an array of paths as first argument
+ *******************************************************/
+
+var readr = require(process.cwd()),
+    expect  = require('chai').expect;
+
+var file1 = {
+  path: 'test/files/example/example.info.txt',
+  contents: 'Example info!',
+  friendlyPath: 'test/files/example/example.info'
+}
+
+var file2 = {
+  path: 'test/files/example/index.mustache',
+  contents: '<h1>Example!</h1>',
+  friendlyPath: 'test/files/example/index'
+}
+
+var file3 = {
+  path: 'test/files/info.txt',
+  contents: 'info text',
+  friendlyPath: 'test/files/info'
+}
+
+var expectedFiles = [file1, file2, file3],
+    paths = ['test/files/example', 'test/files/info.txt']
+
+/******
+  SYNC
+ ******/
+var actualSyncFiles = readr.sync(paths);
+expect(actualSyncFiles).to.eql(expectedFiles);
+
+/*******
+  ASYNC
+ *******/
+readr(paths, function (err, actualAsyncFiles) {
+  expect(actualAsyncFiles).to.eql(expectedFiles);
+});

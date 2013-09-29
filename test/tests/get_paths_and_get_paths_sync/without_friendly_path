@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+
+/*********************************************************
+  TEST:
+    If `friendlyPath` option is false, then the resulting
+    path objects will not have a `friendlyPath` attribute
+ *********************************************************/
+
+var readr = require(process.cwd()),
+    expect  = require('chai').expect;
+
+var file1 = {
+  path: 'test/files/example/index.mustache'
+}
+
+var file2 = {
+  path: 'test/files/form.mustache'
+}
+
+var file3 = {
+  path: 'test/files/index.mustache'
+}
+
+var expectedFiles = [file1, file2, file3]
+
+/******
+  SYNC
+ ******/
+var actualSyncFiles = readr.getPathsSync('test/files', {friendlyPath: false, extension: 'mustache'});
+expect(actualSyncFiles).to.eql(expectedFiles);
+
+
+/*******
+  ASYNC
+ *******/
+readr.getPaths('test/files', {friendlyPath: false, extension: 'mustache'}, function (err, actualAsyncFiles) {
+  expect(actualAsyncFiles).to.eql(expectedFiles);
+});

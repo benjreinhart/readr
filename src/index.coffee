@@ -1,91 +1,53 @@
 Path = require 'path'
-Paths = require './readr/paths'
-fsHelpers = require './readr/fs_helpers'
+globber = require 'globber'
 getFriendlyPath = require './readr/friendly_path'
-{isString} = require './readr/utils'
-{getFile, getFileSync, getFiles, getFilesSync} = require './readr/files'
+{getFiles, getFilesSync} = (File = require './readr/file')
 
 module.exports = readr = (path, options, cb) ->
   if 'function' is typeof options then cb = options; options = {}
 
-  unless isAbsolutePath path
-    path = resolveRelative path
-
-  if fsHelpers.isFile path
-    return getFileAsync path, options, cb
-
-  options.basePath = path
+  options.includeDirectories = false
   getFiles path, options, (err, files) ->
-    return (cb err) if err?
-    return (cb null, files) if options.friendlyPath is false
+    if err? then return cb(err)
 
-    cb null, (files.map (file) -> addFriendlyPath file, options)
-  undefined
+    if options.friendlyPath is false
+      return cb null, files
+
+    cb null, files.map (file) ->
+      addFriendlyPath file, options
 
 readr.sync = (path, options = {}) ->
-  unless isAbsolutePath path
-    path = resolveRelative path
+  options.includeDirectories = false
+  files = getFilesSync(path, options)
 
-  if fsHelpers.isFile path
-    file = getFileSync(path)
-    if options.friendlyPath isnt false
-      file = addFriendlyPath getFileSync(path), options
-    return [file]
+  if options.friendlyPath is false
+    return files
 
-  files = getFilesSync path, options
-  return files if options.friendlyPath is false
-
-  options.basePath = path
-  files.map (file) -> addFriendlyPath file, options
-
+  files.map (file) ->
+    addFriendlyPath file, options
 
 readr.getPaths = (path, options, cb) ->
   if 'function' is typeof options then cb = options; options = {}
 
-  unless isAbsolutePath path
-    path = resolveRelative path
-
-  Paths.getPaths path, options, (err, paths) ->
-    return (cb err) if err?
+  options.includeDirectories = false
+  File.glob path, options, (err, paths) ->
+    if err? then return cb(err)
 
     if options.friendlyPath is false
       return cb null, (paths.map (path) -> {path})
 
-    options.basePath = path
-    cb null, paths.map (path) -> addFriendlyPath {path}, options
-  undefined
+    cb null, paths.map (path) ->
+      addFriendlyPath {path}, options
 
 readr.getPathsSync = (path, options = {}) ->
-  unless isAbsolutePath path
-    path = resolveRelative path
-
-  paths = Paths.getPathsSync path, options
+  options.includeDirectories = false
+  paths = File.glob.sync path, options
 
   if options.friendlyPath is false
     return paths.map (path) -> {path}
 
-  options.basePath = path
-  paths.map (path) -> addFriendlyPath {path}, options
-
-
-
-###########
-# PRIVATE #
-###########
-
-getFileAsync = (path, options, cb) ->
-  getFile path, (err, file) ->
-    return cb err if err?
-    if options.friendlyPath is false
-      cb null, [file]
-    else
-      cb null, [addFriendlyPath file, options]
-
-resolveRelative = do (cwd = process.cwd()) ->
-  (path) -> Path.resolve cwd, path
-
-isAbsolutePath = (path) ->
-  /^\//.test path
+  paths.map (path) ->
+    addFriendlyPath {path}, options
 
 addFriendlyPath = (file, options) ->
   file.friendlyPath = getFriendlyPath file.path, options

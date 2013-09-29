@@ -19,11 +19,13 @@ $(LIBDIR)/%.js: $(SRCDIR)/%.coffee
 	@mkdir -p "$(@D)"
 	$(COFFEE) <"$<" >"$@"
 
-test: build
-	$(MOCHA) --reporter spec --recursive --colors
+test: build test-integration test-unit
 
-test/%.coffee : build
-	$(MOCHA) --reporter spec --recursive  --colors "$@"
+test-integration: build
+	@$(MOCHA) -s 215 --reporter spec --recursive --colors test/integration_test.coffee
+
+test-unit: build
+	@$(MOCHA) --reporter spec --recursive --colors test/unit_test.coffee
 
 tag:
 	git tag v`./node_modules/.bin/coffee -e --cli "console.log JSON.parse(require('fs').readFileSync('package.json')).version"`
