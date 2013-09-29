@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+
+/********************************************************
+  TEST:
+    The `friendlyPath` attribute on the resulting path
+    objects is the result of calling the `friendlyPath`
+    option if it is a function.
+ *******************************************************/
+
+var readr = require(process.cwd()),
+    expect  = require('chai').expect,
+    Path = require('path');
+
+var file1 = {
+  path: 'test/files/example/index.mustache',
+  friendlyPath: 'mustache_templates/index'
+}
+
+var file2 = {
+  path: 'test/files/form.mustache',
+  friendlyPath: 'mustache_templates/form'
+}
+
+var file3 = {
+  path: 'test/files/index.mustache',
+  friendlyPath: 'mustache_templates/index'
+}
+
+var expectedFiles = [file1, file2, file3]
+var friendlyPath = function(path){
+  return 'mustache_templates/' + Path.basename(path)
+}
+
+
+/******
+  SYNC
+ ******/
+var actualSyncFiles = readr.getPathsSync('test/files', {extension: 'mustache', friendlyPath: friendlyPath});
+expect(actualSyncFiles).to.eql(expectedFiles);
+
+
+/*******
+  ASYNC
+ *******/
+readr.getPaths('test/files', {extension: 'mustache', friendlyPath: friendlyPath}, function (err, actualAsyncFiles) {
+  expect(actualAsyncFiles).to.eql(expectedFiles);
+});

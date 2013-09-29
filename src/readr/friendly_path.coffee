@@ -1,29 +1,12 @@
-{sep} = require 'path'
-{isString} = require './utils'
+Path = require 'path'
 
 module.exports = (path, options = {}) ->
-  {basePath, extension, friendlyPath} = options
+  {friendlyPath} = options
 
-  if isString friendlyPath
-    return friendlyPath
-
-  fp = path
-
-  if isString extension
-    fp = removeExtension path, extension
-
-  if isString basePath
-    fp = removeBasePath basePath, fp
+  extension = Path.extname(path)
+  path = path.replace (new RegExp "\\#{extension}$"), ''
 
   if 'function' is typeof friendlyPath
-    fp = friendlyPath fp, path
+    path = friendlyPath path
 
-  fp
-
-removeBasePath = (basePath, path) ->
-  if basePath[-1..] isnt sep
-    basePath += sep
-  path.replace (new RegExp "^#{basePath}"), ''
-
-removeExtension = (path, extension) ->
-  path.replace (new RegExp "\\.#{extension}$"), ''
+  path

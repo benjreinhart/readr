@@ -1,0 +1,55 @@
+#!/usr/bin/env node
+
+/********************************************************
+  TEST:
+    Read all files (recursively) in a given directory.
+ *******************************************************/
+
+var readr = require(process.cwd()),
+    expect  = require('chai').expect;
+
+var file1 = {
+  path: 'test/files/example/example.info.txt',
+  contents: 'Example info!',
+  friendlyPath: 'test/files/example/example.info'
+}
+
+var file2 = {
+  path: 'test/files/example/index.mustache',
+  contents: '<h1>Example!</h1>',
+  friendlyPath: 'test/files/example/index'
+}
+
+var file3 = {
+  path: 'test/files/form.mustache',
+  contents: '<form></form>',
+  friendlyPath: 'test/files/form'
+}
+
+var file4 = {
+  path: 'test/files/index.mustache',
+  contents: '<h1></h1>',
+  friendlyPath: 'test/files/index'
+}
+
+var file5 = {
+  path: 'test/files/info.txt',
+  contents: 'info text',
+  friendlyPath: 'test/files/info'
+}
+
+var expectedFiles = [file1, file2, file3, file4, file5]
+
+/******
+  SYNC
+ ******/
+var actualSyncFiles = readr.sync('test/files');
+expect(actualSyncFiles).to.eql(expectedFiles);
+
+
+/*******
+  ASYNC
+ *******/
+readr('test/files', function (err, actualAsyncFiles) {
+  expect(actualAsyncFiles).to.eql(expectedFiles);
+});

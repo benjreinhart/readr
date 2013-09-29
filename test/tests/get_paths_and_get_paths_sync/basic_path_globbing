@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+
+/********************************************************
+  TEST:
+    Fine all files in a within a directory (recursively)
+    with the specified extension.
+ *******************************************************/
+
+var readr = require(process.cwd()),
+    expect  = require('chai').expect;
+
+var file1 = {
+  path: 'test/files/example/index.mustache',
+  friendlyPath: 'test/files/example/index'
+}
+
+var file2 = {
+  path: 'test/files/form.mustache',
+  friendlyPath: 'test/files/form'
+}
+
+var file3 = {
+  path: 'test/files/index.mustache',
+  friendlyPath: 'test/files/index'
+}
+
+var expectedFiles = [file1, file2, file3]
+
+/******
+  SYNC
+ ******/
+var actualSyncFiles = readr.getPathsSync('test/files', {extension: 'mustache'});
+expect(actualSyncFiles).to.eql(expectedFiles);
+
+
+/*******
+  ASYNC
+ *******/
+readr.getPaths('test/files', {extension: 'mustache'}, function (err, actualAsyncFiles) {
+  expect(actualAsyncFiles).to.eql(expectedFiles);
+});
