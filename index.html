@@ -148,7 +148,7 @@
 <code>friendlyPath</code> {Function|Boolean}
 
 <ul>
-<li>function - will invoke the function for each file found, passing it <code>(path, absolutePath)</code> where <code>path</code> is the absolute path minus the extension and optionally minus the base directory. The result of this call will be the <code>friendlyPath</code> of the file object.</li>
+<li>function - will invoke the function for each file found, passing it a <code>path</code> argument where <code>path</code> is the path relative to the current working directory (or the absolute path of the file if the <code>absolute</code> option is true) minus the extension. The result of this call will be the <code>friendlyPath</code> of the file object.</li>
 <li>bool - if <code>false</code>, the resulting file objects will have no <code>friendlyPath</code> attribute</li>
 </ul>
 </li>
@@ -172,6 +172,16 @@
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-22235222-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
